@@ -8,7 +8,8 @@ public class ControllerAI : MonoBehaviour
     public enum Estados
     {
         ESPERAR,
-        PATRULHAR
+        PATRULHAR,
+        PERSEGUIR
     }
 
     private Estados estadoAtual;
@@ -16,6 +17,8 @@ public class ControllerAI : MonoBehaviour
     private Transform alvo;
 
     private NavMeshAgent navMeshAgent;
+
+    private Transform player;
 
     // Estado: Esperar
     [Header("Estado: Esperar")]
@@ -30,6 +33,11 @@ public class ControllerAI : MonoBehaviour
     public float distanciaMinimaWaypoint = 1f;
     private float distanciaWaypointAtual;
 
+    // Estado: Perseguir
+    [Header("Estado: Perseguir")]
+    public float campoVisao = 5f;
+    private float distanciaJogador;
+
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -37,6 +45,8 @@ public class ControllerAI : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
         waypointAtual = waypoint1;
 
         Esperar();
@@ -49,6 +59,13 @@ public class ControllerAI : MonoBehaviour
 
     private void ChecarEstados()
     {
+        if (estadoAtual != Estados.PERSEGUIR && PossuiVisaoJogador())
+        {
+            Perseguir();
+
+            return;
+        }
+
         switch (estadoAtual)
         {
             case Estados.ESPERAR:
@@ -73,6 +90,18 @@ public class ControllerAI : MonoBehaviour
                 else
                 {
                     alvo = waypointAtual;
+                }
+
+                break;
+
+            case Estados.PERSEGUIR:
+                if (!PossuiVisaoJogador())
+                {
+                    Esperar();
+                }
+                else
+                {
+                    alvo = player;
                 }
 
                 break;
@@ -119,4 +148,23 @@ public class ControllerAI : MonoBehaviour
     }
 
     #endregion PATRULHAR
+
+    #region PERSEGUIR
+
+    private void Perseguir()
+    {
+        estadoAtual = Estados.PERSEGUIR;
+    }
+
+    private bool PossuiVisaoJogador()
+    {
+        distanciaJogador = Vector3.Distance(
+            transform.position,
+            player.position
+        );
+
+        return distanciaJogador <= campoVisao;
+    }
+
+    #endregion PERSEGUIR
 }

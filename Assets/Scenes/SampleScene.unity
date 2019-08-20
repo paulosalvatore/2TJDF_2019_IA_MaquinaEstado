@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358299048}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.45, y: 0.5, z: -0.00000011920929}
+  m_LocalPosition: {x: 9.22, y: 0.5, z: -0.00000011920929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 495349990}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -679,7 +679,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1186846442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.2, y: 0.5, z: -0.00000011920929}
+  m_LocalPosition: {x: -15.96, y: 0.5, z: -0.00000011920929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -956,7 +956,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933669345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.36, y: 0.5, z: 0}
+  m_LocalPosition: {x: 1.13, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -974,10 +974,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a695e0fd068039a4c8f6751c6610a55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempoEsperar: 2
+  tempoEsperar: 20
   waypoint1: {fileID: 358299049}
   waypoint2: {fileID: 1186846443}
   distanciaMinimaWaypoint: 1
+  campoVisao: 5
 --- !u!195 &1933669351
 NavMeshAgent:
   m_ObjectHideFlags: 0
