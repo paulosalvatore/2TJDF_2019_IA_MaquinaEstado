@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityStandardAssets.Characters.ThirdPerson;
 
 public class ControllerAI : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class ControllerAI : MonoBehaviour
     {
         ESPERAR,
         PATRULHAR,
-        PERSEGUIR
+        PERSEGUIR,
+        PROCURAR
     }
 
     private Estados estadoAtual;
@@ -17,6 +19,7 @@ public class ControllerAI : MonoBehaviour
     private Transform alvo;
 
     private NavMeshAgent navMeshAgent;
+    private AICharacterControl aiCharacterControl;
 
     private Transform player;
 
@@ -38,9 +41,15 @@ public class ControllerAI : MonoBehaviour
     public float campoVisao = 5f;
     private float distanciaJogador;
 
+    // Estado: Procurar
+    [Header("Estado: Procurar")]
+    public float tempoProcurar = 4f;
+    private float tempoProcurando = 0f;
+
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        aiCharacterControl = GetComponent<AICharacterControl>();
     }
 
     private void Start()
@@ -97,7 +106,7 @@ public class ControllerAI : MonoBehaviour
             case Estados.PERSEGUIR:
                 if (!PossuiVisaoJogador())
                 {
-                    Esperar();
+                    Procurar();
                 }
                 else
                 {
@@ -105,9 +114,28 @@ public class ControllerAI : MonoBehaviour
                 }
 
                 break;
+
+            case Estados.PROCURAR:
+                if (ProcurouTempoSuficiente())
+                {
+                    Esperar();
+                }
+                else
+                {
+                    alvo = null;
+                }
+
+                break;
         }
 
-        navMeshAgent.destination = alvo.position;
+        if (aiCharacterControl)
+        {
+            aiCharacterControl.SetTarget(alvo);
+        }
+        else if (alvo)
+        {
+            navMeshAgent.destination = alvo.position;
+        }
     }
 
     #region ESPERAR
@@ -167,4 +195,19 @@ public class ControllerAI : MonoBehaviour
     }
 
     #endregion PERSEGUIR
+
+    #region PROCURAR
+
+    private void Procurar()
+    {
+        estadoAtual = Estados.PROCURAR;
+        tempoProcurando = Time.time;
+    }
+
+    private bool ProcurouTempoSuficiente()
+    {
+        return tempoProcurando + tempoProcurar <= Time.time;
+    }
+
+    #endregion PROCURAR
 }
